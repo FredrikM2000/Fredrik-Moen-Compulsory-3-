@@ -14,9 +14,11 @@ int randomColumn() {
 }
 
 void makeEmptyBoard() {
+	
 	for (int i = 0; i < N; i++) {
+		std::cout << " ";
 		for (int j = 0; j < M; j++) {
-			std::cout << "[" << board[i][j] << "]";
+			std::cout << "[" << board[i][j] << "] ";
 		}
 		std::cout << "\n";
 	}
@@ -24,45 +26,46 @@ void makeEmptyBoard() {
 
 void writeLetters() {
 	char letters[6] = { 'A','B','C','D','E','F' };
-	std::cout << "|";
+	std::cout << "| ";
 	for (int l = 0; l <= sizeof(letters) - 1; l++) {
-		std::cout << letters[l] << "|";
+		std::cout << letters[l] << " | ";
 	}
 }
 
 void MakeBoard(int numberOfShips) {
 	const char SHIP = 'S';
 	for (int n = 0; n <= numberOfShips-1; n++) {
-		//std::cout << n;
-		if (board[randomColumn()][randomRow()] == ' ') {
-			/*n--;
-			std::cout << "|";*/
-			board[randomColumn()][randomRow()] = SHIP;
-		}
-		else {
-		//	board[randomColumn()][randomRow()] = SHIP;
+
+		int x = randomColumn();
+		int y = randomRow();
+
+		if (board[x][y] == SHIP) {
 			n--;
 		}
-		//makeEmptyBoard();
-		//std::cout << "\n";
+		else {
+			board[x][y] = SHIP;
+		}
 	}
 }
 
 
-//TODO: separer makeemptyboard og printboard 
-
-
 void printBoard() {
-	MakeBoard(4);
+	MakeBoard(3);
 	makeEmptyBoard();
-	//writeLetters();
+	writeLetters();
+}
+
+void printPlayerBoard() {
+	board[hitx][hitY] = 'H';
+	makeEmptyBoard();
+	writeLetters();
 }
 
 
 void battleship() {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-	
-	printBoard();
+	printPlayerBoard();
+	//printBoard();
 }
 
 
