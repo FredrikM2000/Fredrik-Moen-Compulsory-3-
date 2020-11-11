@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <ctime>
 #include "Header.h"
+#include <string>
 
 int randomRow() {
 	int randRow = rand() % M;
@@ -48,6 +49,10 @@ void MakeBoard(int numberOfShips) {
 	}
 }
 
+//const char WHITE[8]{ 0x1b, '[', '0', ';', '3', '9', 'm', 0 };
+//const char RED[8]{ 0x1b, '[', '1', ';', '3', '1', 'm', 0 };
+
+
 
 void printBoard() {
 	MakeBoard(3);
@@ -56,7 +61,17 @@ void printBoard() {
 }
 
 void printPlayerBoard() {
-	board[hitx][hitY] = 'H';
+
+	
+
+	for (int h = 0; h <= shots_taken-1;h++) {
+		board[hitX[h]][hitY[h]] = 'H';
+		/*std::cout << hitX[h] << " " << hitY[h];
+		std::cout << h;*/
+		std::cout << hitX[h];
+		std::cout << hitY[h] << " ";
+	}
+
 	makeEmptyBoard();
 	writeLetters();
 }
@@ -69,9 +84,6 @@ void battleship() {
 }
 
 
-
-
-
 void chng_pswrd() {
 
 
@@ -79,175 +91,135 @@ void chng_pswrd() {
 }
 
 
+void log_in(){
+	bool login = false;
+	int tries = 0;
+	do {
+		tries += 1;
+
+		int moves = 0;
+		int user = 0;
+		std::string password;
+		std::string pTry = "BCDHLPONM";
+		do {
+
+			std::string passLetters = { "ABCDEFGHIJKLMNOP" };
+			passLetters[user] = '*';
+
+			std::cout << "\n  |  " << passLetters[0] << "  ";
+			std::cout << "|  " << passLetters[1] << "  ";
+			std::cout << "|  " << passLetters[2] << "  ";
+			std::cout << "|  " << passLetters[3] << "  |\n";
+			std::cout << "  |  " << passLetters[4] << "  ";
+			std::cout << "|  " << passLetters[5] << "  ";
+			std::cout << "|  " << passLetters[6] << "  ";
+			std::cout << "|  " << passLetters[7] << "  |\n";
+			std::cout << "  |  " << passLetters[8] << "  ";
+			std::cout << "|  " << passLetters[9] << "  ";
+			std::cout << "|  " << passLetters[10] << "  ";
+			std::cout << "|  " << passLetters[11] << "  |\n";
+			std::cout << "  |  " << passLetters[12] << "  ";
+			std::cout << "|  " << passLetters[13] << "  ";
+			std::cout << "|  " << passLetters[14] << "  ";
+			std::cout << "|  " << passLetters[15] << "  |\n";
+			std::endl(std::cout);
+
+			std::cout << "\nUse 9 moves to enter the passcode\n";
+			std::cout << "You have 3 tries\n";
+
+			std::cout << "\nUse W/A/S/D to move around";
+			char r = _getch();
+
+			moves += 1;
+
+			switch (r) {
+			case('w'):
+				user -= 4;
+				if (user < 0) {
+					user += 4;
+					moves--;
+				}
+				password += passLetters[user];
+
+				break;
+			case('s'):
+				user += 4;
+				if (user > 15) {
+					user -= 4;
+					moves--;
+				}
+				password += passLetters[user];
+				break;
+			case('a'):
+				user -= 1;
+				if (user < 0) {
+					user += 1;
+					moves--;
+				}
+				password += passLetters[user];
+				break;
+			case('d'):
+				user += 1;
+				if (user > 15) {
+					user -= 1;
+					moves--;
+				}
+				password += passLetters[user];
+				break;
+			default:
+				std::cout << "Not valid";
+				moves--;
+			}
+
+			//if the Password matches the password attempt the user can log in
+			if (password == pTry) {
+				login = true;
+			}
+			system("cls");
+		} while (moves != 9 && login == false);
+
+		if (tries == 4) {
+			std::exit(0);
+		}
+	} while (login == false);
+	}
+
+void menu() {
+	//Main menu
+	bool exitprogram = false;
+	do {
+		int answer;
+		std::cout << "1. Change password\n";
+		std::cout << "2. Play battleship\n";
+		std::cout << "3. Quit\n\n";
+		std::cout << "Select an option(1-3): ";
+
+		std::cin >> answer;
+
+		switch (answer) {
+		case(1):
+			chng_pswrd();
+			break;
+		case(2):
+			battleship();
+			break;
+		case(3):
+			exitprogram = true;
+			break;
+		default:
+			std::cout << "Wrong input... Try again";
+		}
+
+	} while (exitprogram == false);
 
 
-
+}
 
 int main() {
 
-
+	//writeLetters();
 	battleship();
-
-//	bool move1 = false;
-//	bool move2 = false;
-//	bool move3 = false;
-//	bool move4 = false;
-//	bool move5 = false;
-//	bool move6 = false;
-//	bool move7 = false;
-//	bool move8 = false;
-//	bool move9 = false;
-//
-//	bool login = false;
-//	int tries = 0;
-//	do {
-//		tries += 1;
-//
-//		int moves = 0;
-//		int user = 0;
-//		do {
-//
-//			char arr[16] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'};
-//			arr[user] = '*';
-//
-//
-//			std::cout << "\n  |  " << arr[0] << "  ";
-//			std::cout << "|  " << arr[1] << "  ";
-//			std::cout << "|  " << arr[2] << "  ";
-//			std::cout << "|  " << arr[3] << "  |\n";
-//			std::cout << "  |  " << arr[4] << "  ";
-//			std::cout << "|  " << arr[5] << "  ";
-//			std::cout << "|  " << arr[6] << "  ";
-//			std::cout << "|  " << arr[7] << "  |\n";
-//			std::cout << "  |  " << arr[8] << "  ";
-//			std::cout << "|  " << arr[9] << "  ";
-//			std::cout << "|  " << arr[10] << "  ";
-//			std::cout << "|  " << arr[11] << "  |\n";
-//			std::cout << "  |  " << arr[12] << "  ";
-//			std::cout << "|  " << arr[13] << "  ";
-//			std::cout << "|  " << arr[14] << "  ";
-//			std::cout << "|  " << arr[15] << "  |\n";
-//			std::endl(std::cout);
-//
-//			std::cout << "\nUse 9 moves to enter the passcode\n";
-//			std::cout << "You have 3 tries\n";
-//
-//			std::cout << "\nUse W/A/S/D to move around";
-//			char r = _getch();
-//
-//			moves += 1;
-//
-//			switch (r) {
-//			case('w'):
-//				user -= 4;
-//				if (user < 0) {
-//					user += 4;
-//					moves--;
-//				}
-//				break;
-//			case('s'):
-//				user += 4;
-//				if (user > 15) {
-//					user -= 4;
-//					moves--;
-//				}
-//				break;
-//			case('a'):
-//				user -= 1;
-//				if (user < 0) {
-//					user += 1;
-//					moves--;
-//				}
-//				break;
-//			case('d'):
-//				user += 1;
-//				if (user > 15) {
-//					user -= 1;
-//					moves--;
-//				}
-//				break;
-//			default:
-//				std::cout << "Not valid";
-//				moves--;
-//			}
-//
-//			if (moves == 1 && user == 1) {
-//				move1 = true;
-//			}
-//			if (moves == 2 && user == 2) {
-//				move2 = true;
-//			}
-//			if (moves == 3 && user == 3) {
-//				move3 = true;
-//			}
-//			if (moves == 4 && user == 7) {
-//				move4 = true;
-//			}
-//			if (moves == 5 && user == 11) {
-//				move5 = true;
-//			}
-//			if (moves == 6 && user == 15) {
-//				move6 = true;
-//			}
-//			if (moves == 7 && user == 14) {
-//				move7 = true;
-//			}
-//			if (moves == 8 && user == 13) {
-//				move8 = true;
-//			}
-//			if (moves == 9 && user == 12) {
-//				move9 = true;
-//			}
-//			
-//			
-//			//if the move matches the digit, you will be able to login
-//			if (move1 == true && move2 == true && move3 == true && move4 == true && move5 == true && move6 == true && move7 == true && move8 == true && move9 == true) {
-//				login = true;
-//			}
-//
-//			system("cls");
-//
-//		} while (moves != 9 && login == false);
-//
-//
-//		/*if (moves == 1 && user == 3) {
-//			login = true;
-//		}*/
-//		if (tries == 4) {
-//			std::exit(0);
-//		}
-//	} while (login == false);
-//
-//	//Main menu
-//
-//
-//	bool exitprogram = false;
-//	do {
-//	int answer;
-//	std::cout << "1. Change password\n";
-//	std::cout << "2. Play battleship\n";
-//	std::cout << "3. Quit\n\n";
-//	std::cout << "Select an option(1-3): ";
-//
-//	std::cin >> answer;
-//
-//		switch (answer) {
-//		case(1):
-//			chng_pswrd();
-//			break;
-//		case(2):
-//			battleship();
-//			break;
-//		case(3):
-//			exitprogram = true;
-//			break;
-//		default:
-//			std::cout << "Wrong input... Try again";
-//		}
-//
-//	} while (exitprogram == false);
-//
-
-
+	//log_in();
+	//menu();
 
 }

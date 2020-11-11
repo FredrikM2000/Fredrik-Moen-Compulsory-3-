@@ -6,5 +6,8 @@ char blank = ' ';
 
 char board[N][M] = {0};
 
-int hitx = 5;
-int hitY = 5;
+int shots_taken = 2;
+const int hitSize = 10;
+int hitX[hitSize] = {3,6};
+int hitY[hitSize] = {2,5};
+
