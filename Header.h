@@ -8,7 +8,9 @@ char board[N][M] = {0};
 
 const char SHIP = 'S';
 
-int ships = 20;
+int ships = 10;
+int remaining_ships = ships;
+int shots = 25;
 
 std::vector <int> shipX = {};
 std::vector <int> shipY = {};
@@ -21,4 +23,3 @@ int misses = 0;
 std::vector <int> missX = {};
 std::vector <int> missY = {};
 
-int shots = 5;
