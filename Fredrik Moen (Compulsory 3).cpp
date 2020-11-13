@@ -4,18 +4,20 @@
 #include "Header.h"
 #include <string>
 
-int randomRow() {
-	int randRow = rand() % M;
-	return randRow;
-}
+
+
 
 int randomColumn() {
 	int randColumn = rand() % N;
 	return randColumn;
 }
 
+int randomRow() {
+	int randRow = rand() % M;
+	return randRow;
+}
+
 void makeEmptyBoard() {
-	
 	for (int i = 0; i < N; i++) {
 		std::cout << " ";
 		for (int j = 0; j < M; j++) {
@@ -34,19 +36,75 @@ void writeLetters() {
 }
 
 void MakeBoard(int numberOfShips) {
-	const char SHIP = 'S';
-	for (int n = 0; n <= numberOfShips-1; n++) {
 
+	for (int n = 0; n <= ships-1; n++) {
 		int x = randomColumn();
 		int y = randomRow();
 
-		if (board[x][y] == SHIP) {
-			n--;
+		if (n == 0) {
+			shipX.push_back(x);
+			shipY.push_back(y);
 		}
 		else {
-			board[x][y] = SHIP;
+
+			int existingShip = n;
+			for (int a = 0; a <= n-1; a++) {
+				if (shipX[a] == x && shipY[a] == y) {
+					n--;
+				}
+			}
+			if (existingShip == n) {
+				shipX.push_back(x);
+				shipY.push_back(y);
+			}
 		}
+		/*std::cout << "[" << q << "]" << shipX[q] << shipY[q] << " ";
+			if (q % 10 == 0 || q == 35) {
+				std::cout << "\n";
+			}*/
 	}
+	//
+	//for (int n = 0; n <= numberOfShips-1; n++) {
+
+	//	//if (n == 0) {
+	//	//	shipX.push_back(x);
+	//	//	shipY.push_back(y);
+	//	//	//std::cout << shipX[0] << shipY[0];
+	//	//}
+	//	//else {
+
+	//		int existingShip = n;
+	//		//for (int a = 1; a <= n-1; a++) {
+	//		//	//std::cout << shipX[a] << shipY[a];
+	//		//	if (x == shipX[a]) {
+	//		//		if (y = shipY[a]) {
+	//		//			n--;
+	//		//			
+	//		//		}
+	//		//	}
+	//		//	//std::cout << a << " ";
+	//		//}
+	//		//std::cout << n << " ";
+	//		if (existingShip == n) {
+	//			shipX.push_back(x);
+	//			shipY.push_back(y);
+	//			//std::cout << n << " ";
+	//		}
+	//	//}
+	//	/*std::cout << shipX.at(n);
+	//	if (board[x][y] == SHIP) {
+	//		n--;
+	//	}
+	//	else {
+	//		board[x][y] = SHIP;
+	//	}*/
+	//		std::cout << "[" << n << "]" << shipX[n] << shipY[n] << " ";
+	//		if (n % 10 == 0 || n == 35) {
+	//			std::cout << "\n";
+	//		}
+	//}
+	
+
 }
 
 //const char WHITE[8]{ 0x1b, '[', '0', ';', '3', '9', 'm', 0 };
@@ -55,32 +113,88 @@ void MakeBoard(int numberOfShips) {
 
 
 void printBoard() {
-	MakeBoard(3);
+	MakeBoard(ships);
+	for (int s = 0; s <= ships-1; s++) {
+		board[shipX[s]][shipY[s]] = SHIP;
+	}
+	//board[shipX[0]][shipY[0]] = SHIP;
 	makeEmptyBoard();
 	writeLetters();
 }
 
 void printPlayerBoard() {
-
-	
-
-	for (int h = 0; h <= shots_taken-1;h++) {
-		board[hitX[h]][hitY[h]] = 'H';
-		/*std::cout << hitX[h] << " " << hitY[h];
-		std::cout << h;*/
-		std::cout << hitX[h];
-		std::cout << hitY[h] << " ";
-	}
-
+	//if (hits <= 1) {
+		for (int h = 0; h <= hits - 1; h++) {
+			board[hitY[h]][hitX[h]] = 'H';
+		}
+	//}
+	//if (misses <= 1) {
+		for (int m = 0; m <= misses - 1; m++) {
+			board[missY[m]][missX[m]] = 'M';
+		}
+	//}
 	makeEmptyBoard();
 	writeLetters();
 }
 
+void shoot() {
+	std::string shot;
+	std::cout << "Choose which cell to shoot at: ";
+	std::cout << "Shots: " << shots;
+	std::cin >> shot;
+	int shotX = shot.at(0) - 97;
+	int shotY = shot.at(1) - 49;
+	//std::cout << shotY << shotX;
+
+
+	int hitTest = hits;
+	for (int t = 0; t <= ships - 1; t++) {
+
+		/*if (hits >= 1) {
+			if (shotY == hitY[t] && shotX == hitX[t]) { std::cout << "brah"; }
+		}
+		if (misses >= 1) {
+			if (shotY == missY[t] && shotX == missX[t]) { std::cout << "brah"; }
+		}*/
+		//else {
+		if (shotY == shipY[t] && shotX == shipX[t]) {
+			hits++;
+			//std::cout << "hjui";
+		}
+	}
+	
+	if (hitTest != hits) {
+		hitX.push_back(shotX);
+		hitY.push_back(shotY);
+	} else {
+
+	//for (int tp = 0; tp <= ships - 1; tp++) {
+		//if (shotY != shipY[tp] && shotX != shipX[tp]) {
+			missX.push_back(shotX);
+			missY.push_back(shotY);
+			misses++;
+			//std::cout << "hey";
+		}
+		//}
+	//}
+
+	
+	
+	shots--;
+}
 
 void battleship() {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-	printPlayerBoard();
+	MakeBoard(ships);
 	//printBoard();
+	printPlayerBoard();
+	
+	while (shots >= 1) {
+		
+		shoot();
+		printPlayerBoard();
+	}
+	
 }
 
 
